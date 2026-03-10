@@ -1,0 +1,66 @@
+name: Generate Gallery Manifests
+
+on:
+  push:
+    paths:
+      - 'images/gallery/**'
+
+jobs:
+  generate-manifests:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate photos.json for each category
+        run: |
+          GALLERY_DIR="images/gallery"
+          EXTENSIONS="jpg jpeg png gif webp JPG JPEG PNG GIF WEBP"
+
+          for CATEGORY_PATH in "$GALLERY_DIR"/*/; do
+            CATEGORY=$(basename "$CATEGORY_PATH")
+            OUTPUT="$CATEGORY_PATH/photos.json"
+
+            echo "Processing: $CATEGORY"
+
+            # Build JSON array of photo objects
+            JSON="["
+            FIRST=true
+
+            for EXT in $EXTENSIONS; do
+              for FILE in "$CATEGORY_PATH"*."$EXT"; do
+                [ -f "$FILE" ] || continue
+                FILENAME=$(basename "$FILE")
+
+                # Skip the manifest itself just in case
+                [ "$FILENAME" = "photos.json" ] && continue
+
+                if [ "$FIRST" = true ]; then
+                  FIRST=false
+                else
+                  JSON="$JSON,"
+                fi
+
+                # Each entry has filename and an empty caption field
+                # Caption can be filled in manually later per photo
+                JSON="$JSON{\"filename\":\"$FILENAME\",\"caption\":\"\"}"
+              done
+            done
+
+            JSON="$JSON]"
+
+            echo "$JSON" > "$OUTPUT"
+            echo "  Written: $OUTPUT"
+          done
+
+      - name: Commit and push manifests
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add images/gallery/**/photos.json
+          git diff --staged --quiet || git commit -m "Auto-update gallery manifests [skip ci]"
+          git push
