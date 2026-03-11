@@ -661,41 +661,64 @@
       }
 
       const ctx = canvas.getContext('2d');
-      let W, H, navStars;
+      let W, H, navStars, allPx;
 
-      // ── Orion star positions — mapped from reference image ──
+      // ── 10 interactive nav stars (archive slots, March–December) ──
       const ORION_NAV = [
-        { name: 'Meissa',     x: 45,  y: 10  },  // 0  head - top center-left
-        { name: 'Betelgeuse', x: 38,  y: 28  },  // 1  left shoulder
-        { name: 'Bellatrix',  x: 55,  y: 25  },  // 2  right shoulder
-        { name: 'Mintaka',    x: 57,  y: 50  },  // 3  belt right
-        { name: 'Alnilam',    x: 48,  y: 53  },  // 4  belt center
-        { name: 'Alnitak',    x: 40,  y: 56  },  // 5  belt left
-        { name: 'Hatsya',     x: 44,  y: 67  },  // 6  sword - below belt center
-        { name: 'Rigel',      x: 60,  y: 82  },  // 7  right foot - wide right
-        { name: 'Saiph',      x: 33,  y: 84  },  // 8  left foot - wide left
-        { name: 'Pi3 Ori',    x: 30,  y: 12  },  // 9  club top - upper LEFT (raised arm)
-        { name: 'Thabit',     x: 68,  y: 35  },  // 10 shield upper RIGHT
-        { name: 'Tabit',      x: 72,  y: 48  },  // 11 shield lower RIGHT
+        { x: 36.1, y: 21.6 },
+        { x: 54.7, y: 84.8 },
+        { x: 48.9, y: 39   },
+        { x: 62.1, y: 36.2 },
+        { x: 65,   y: 45.6 },
+        { x: 40.9, y: 45.4 },
+        { x: 53.7, y: 65.4 },
+        { x: 44.2, y: 65.2 },
+        { x: 64.6, y: 55.2 },
+        { x: 49.9, y: 74   },
       ];
 
-      // ── Connecting lines ──
+      // ── 11 decorative stars (complete the constellation shape) ──
+      const ORION_DECO = [
+        { x: 33.6, y: 32.4 },
+        { x: 34.3, y: 17.6 },
+        { x: 37.9, y: 37   },
+        { x: 64.1, y: 42.4 },
+        { x: 65.2, y: 50   },
+        { x: 49.2, y: 64   },
+        { x: 35.6, y: 31   },
+        { x: 55.1, y: 51.4 },
+        { x: 51,   y: 70.2 },
+        { x: 49.7, y: 79   },
+        { x: 45.7, y: 84.8 },
+      ];
+
+      // ── Lines (indices 0-9 = nav, 10-20 = deco) ──
       const ORION_LINES = [
-        [9, 1],   // club top → left shoulder (raised arm)
-        [0, 1],   // head → left shoulder
-        [0, 2],   // head → right shoulder
-        [2, 10],  // right shoulder → shield upper
-        [10, 11], // shield upper → shield lower
-        [1, 5],   // left shoulder → belt left
-        [2, 3],   // right shoulder → belt right
-        [3, 4],   // belt right → belt center
-        [4, 5],   // belt center → belt left
-        [4, 6],   // belt center → sword
-        [3, 7],   // belt right → right foot
-        [5, 8],   // belt left → left foot
+        [11, 10],  // DECO-1 → DECO-0
+        [0,  16],  // NAV-0  → DECO-6
+        [12,  5],  // DECO-2 → NAV-5
+        [5,   2],  // NAV-5  → NAV-2
+        [2,  17],  // NAV-2  → DECO-7
+        [17,  4],  // DECO-7 → NAV-4
+        [4,  13],  // NAV-4  → DECO-3
+        [13,  3],  // DECO-3 → NAV-3
+        [4,  14],  // NAV-4  → DECO-4
+        [14,  8],  // DECO-4 → NAV-8
+        [17,  6],  // DECO-7 → NAV-6
+        [6,  15],  // NAV-6  → DECO-5
+        [15,  7],  // DECO-5 → NAV-7
+        [7,  20],  // NAV-7  → DECO-10
+        [20,  1],  // DECO-10→ NAV-1
+        [1,   6],  // NAV-1  → NAV-6
+        [15, 18],  // DECO-5 → DECO-8
+        [18,  9],  // DECO-8 → NAV-9
+        [9,  19],  // NAV-9  → DECO-9
+        [7,   5],  // NAV-7  → NAV-5
+        [12, 16],  // DECO-2 → DECO-6
+        [12, 10],  // DECO-2 → DECO-0
       ];
 
-      // ── Faint background stars (decorative only) ──
+      // ── Faint background scatter stars ──
       const BG_STARS = Array.from({length: 80}, (_, i) => ({
         x: ((i * 137.508) % 100),
         y: ((i * 97.314) % 100),
@@ -709,7 +732,6 @@
         H = canvas.height = wrap.offsetHeight;
         if (W === 0 || H === 0) { requestAnimationFrame(buildStars); return; }
 
-        // Map archive entries onto nav star positions in order
         navStars = ORION_NAV.map((pos, i) => ({
           pos,
           entry: archive[i] || null,
@@ -718,6 +740,12 @@
           r: 4.5,
           pulsePhase: Math.random() * Math.PI * 2
         }));
+
+        // Combined pixel coords for line drawing (nav first, then deco)
+        allPx = [
+          ...ORION_NAV.map(s => ({ x: s.x / 100 * W, y: s.y / 100 * H })),
+          ...ORION_DECO.map(s => ({ x: s.x / 100 * W, y: s.y / 100 * H })),
+        ];
       }
 
       function drawConstellation(t) {
@@ -733,15 +761,22 @@
           ctx.fill();
         });
 
-        // Constellation connecting lines
+        // Constellation lines
         ctx.strokeStyle = 'rgba(200,169,110,0.18)';
         ctx.lineWidth = 1;
-        ctx.setLineDash([]);
         ORION_LINES.forEach(([a, b]) => {
           ctx.beginPath();
-          ctx.moveTo(navStars[a].x, navStars[a].y);
-          ctx.lineTo(navStars[b].x, navStars[b].y);
+          ctx.moveTo(allPx[a].x, allPx[a].y);
+          ctx.lineTo(allPx[b].x, allPx[b].y);
           ctx.stroke();
+        });
+
+        // Decorative stars (faint, non-interactive)
+        ORION_DECO.forEach(s => {
+          ctx.beginPath();
+          ctx.arc(s.x / 100 * W, s.y / 100 * H, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(200,169,110,0.2)';
+          ctx.fill();
         });
 
         // Constellation label
@@ -756,7 +791,7 @@
           const hasEntry = !!s.entry;
           const pulse = 0.6 + 0.4 * Math.sin(t * 0.002 + s.pulsePhase);
           const baseColor = hasEntry ? '200,169,110' : '150,150,170';
-          const alpha = hasEntry ? (0.7 + 0.3 * pulse) : 0.2;
+          const alpha = hasEntry ? (0.7 + 0.3 * pulse) : 0.15;
 
           // Glow
           if (hasEntry) {
@@ -771,19 +806,18 @@
 
           // Star core
           ctx.beginPath();
-          ctx.arc(s.x, s.y, hasEntry ? s.r : s.r * 0.6, 0, Math.PI * 2);
+          ctx.arc(s.x, s.y, hasEntry ? s.r : s.r * 0.5, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${baseColor},${alpha})`;
           ctx.fill();
 
-          // Month label (only for filled entries)
+          // Month label for filled entries
           if (hasEntry) {
             ctx.fillStyle = `rgba(200,169,110,0.55)`;
             ctx.font = '9px Josefin Sans, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText(
               `${s.entry.month.toUpperCase().slice(0,3)} ${s.entry.year}`,
-              s.x,
-              s.y + s.r * 3.8
+              s.x, s.y + s.r * 3.8
             );
           }
         });
