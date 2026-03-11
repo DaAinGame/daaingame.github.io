@@ -299,14 +299,6 @@
       border-top: 1px solid var(--border);
     }
 
-    .genres-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
     .genre-item {
       background: var(--bg);
       padding: 2.5rem 2rem;
@@ -437,6 +429,182 @@
       color: var(--muted);
     }
 
+    /* ABOUT ASIDE */
+    .about-aside {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    .about-quote {
+      border-left: 2px solid var(--accent);
+      padding: 1.5rem 2rem;
+      background: var(--surface);
+    }
+
+    .about-quote-mark {
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+    }
+
+    .about-quote blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .about-quote-attr {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .about-contact-link {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: gap 0.2s;
+    }
+
+    .about-contact-link:hover { gap: 0.9rem; }
+
+    /* MERIDIAN TEASER */
+    .meridian-teaser {
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .meridian-teaser-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      min-height: 360px;
+    }
+
+    .meridian-teaser-img {
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .meridian-teaser-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .meridian-teaser-inner:hover .meridian-teaser-img img {
+      transform: scale(1.03);
+    }
+
+    .meridian-teaser-img-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(200,200,216,0.2);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    .meridian-teaser-content {
+      padding: 3rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.25rem;
+      border-left: 1px solid var(--border);
+    }
+
+    .meridian-teaser-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .meridian-teaser-eyebrow::before {
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .meridian-teaser-month {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    .meridian-teaser-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+
+    .meridian-teaser-blurb {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .meridian-teaser-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+      transition: gap 0.2s;
+    }
+
+    .meridian-teaser-link:hover { gap: 1.1rem; }
+
+    /* GENRES — 4×2 */
+    .genres-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
     /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -492,26 +660,20 @@
     </div>
   </section>
 
-  <!-- GALLERY PLACEHOLDER -->
+  <!-- PORTFOLIO -->
   <section id="gallery">
     <div class="gallery">
       <p class="section-label">Portfolio</p>
-      <div class="gallery-grid">
-		<div class="gallery-item">
-			<img src="images/gallery/astro/m31.png" alt="M31 - Andromeda Galaxy" style="width:100%; height:100%; object-fit:cover;" />
-		</div>
-        <div class="gallery-item">
-			<img src="images/gallery/wildlife/bird1.jpg" alt="Horsehead Nebula" style="width:100%; height:100%; object-fit:cover;" />
-        </div>
-        <div class="gallery-item">
-			<img src="images/gallery/astro/horsehead.png" alt="Horsehead Nebula" style="width:100%; height:100%; object-fit:cover;" />
-        </div>
-        <div class="gallery-item">
-			<img src="images/gallery/wildlife/ember1.jpg" alt="Ember the Cat" style="width:100%; height:100%; object-fit:cover;" />
-        </div>
-        <div class="gallery-item">
-			<img src="images/gallery/airshow/thunderbirds.jpg" alt="Thunderbirds" style="width:100%; height:100%; object-fit:cover;" />
+      <div class="gallery-grid" id="portfolio-grid">
+        <!-- Populated dynamically -->
       </div>
+    </div>
+  </section>
+
+  <!-- MERIDIAN TEASER -->
+  <section id="meridian-teaser">
+    <div class="meridian-teaser" id="meridian-teaser-inner">
+      <!-- Populated dynamically from meridian.json -->
     </div>
   </section>
 
@@ -524,23 +686,13 @@
         <p>Based in Kansas, I photograph the world from the ground up — and the sky down. Whether I'm tracking a nebula across a clear Midwestern night or waiting on a wildlife subject to move into frame, the goal is the same: a moment worth keeping.</p>
         <p>This is a personal project and a living archive. New work goes up as it gets made.</p>
       </div>
-      <div class="about-stats">
-        <div class="stat">
-          <div class="stat-number">01</div>
-          <div class="stat-label">Astrophotography</div>
+      <div class="about-aside">
+        <div class="about-quote">
+          <div class="about-quote-mark">✦</div>
+          <blockquote>Capturing photos one at a time, from the cosmos to the backyard.</blockquote>
+          <div class="about-quote-attr">— Timothy Maclaskey</div>
         </div>
-        <div class="stat">
-          <div class="stat-number">02</div>
-          <div class="stat-label">Wildlife</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">03</div>
-          <div class="stat-label">Landscape</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number">04</div>
-          <div class="stat-label">Digital Worlds</div>
-        </div>
+        <a href="/contact.html" class="about-contact-link">Get in touch →</a>
       </div>
     </div>
   </section>
@@ -584,6 +736,11 @@
           <span class="genre-icon">⬡</span>
           <div class="genre-name">Digital Worlds</div>
           <div class="genre-desc">In-game photography — virtual landscapes, characters, and moments from interactive worlds.</div>
+        </a>
+        <a href="gallery/wanderings.html" class="genre-item">
+          <span class="genre-icon">◎</span>
+          <div class="genre-name">Wanderings</div>
+          <div class="genre-desc">Everything else — airshows, events, and whatever else catches the eye.</div>
         </a>
       </div>
     </div>
@@ -635,6 +792,94 @@
     initStars();
     requestAnimationFrame(drawStars);
     window.addEventListener('resize', () => { resize(); initStars(); });
+
+    // ── Portfolio: weighted random photos ────────────────────────
+    const PORTFOLIO_SOURCES = [
+      { folder: 'astro',        weight: 3 },
+      { folder: 'wildlife',     weight: 3 },
+      { folder: 'Landscape',    weight: 1 },
+      { folder: 'macro',        weight: 1 },
+      { folder: 'Urban',        weight: 1 },
+      { folder: 'digitalworlds',weight: 1 },
+      { folder: 'airshow',      weight: 1 },
+    ];
+
+    async function loadPortfolio() {
+      const grid = document.getElementById('portfolio-grid');
+      const pool = [];
+
+      await Promise.all(PORTFOLIO_SOURCES.map(async ({ folder, weight }) => {
+        try {
+          const res = await fetch(`images/gallery/${folder}/photos.json`);
+          if (!res.ok) return;
+          const photos = await res.json();
+          photos.forEach(p => {
+            for (let i = 0; i < weight; i++) {
+              pool.push({ src: `images/gallery/${folder}/${p.filename}`, caption: p.caption || '' });
+            }
+          });
+        } catch {}
+      }));
+
+      // Shuffle pool
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+
+      // Dedupe by src, pick 5
+      const seen = new Set();
+      const picks = [];
+      for (const item of pool) {
+        if (!seen.has(item.src)) {
+          seen.add(item.src);
+          picks.push(item);
+          if (picks.length === 5) break;
+        }
+      }
+
+      if (!picks.length) return;
+
+      grid.innerHTML = picks.map((p, i) => `
+        <div class="gallery-item">
+          <img src="${p.src}" alt="${p.caption}" style="width:100%;height:100%;object-fit:cover;" loading="${i === 0 ? 'eager' : 'lazy'}"/>
+        </div>
+      `).join('');
+    }
+
+    loadPortfolio();
+
+    // ── Meridian teaser ──────────────────────────────────────────
+    async function loadMeridianTeaser() {
+      const wrap = document.getElementById('meridian-teaser-inner');
+      try {
+        const res = await fetch('/meridian.json');
+        if (!res.ok) return;
+        const entries = await res.json();
+        const current = entries[0];
+        if (!current) return;
+
+        const hasImg = current.filename && current.filename !== '';
+        const imgHTML = hasImg
+          ? `<div class="meridian-teaser-img"><img src="images/meridian/${current.filename}" alt="${current.title}" loading="lazy"/></div>`
+          : `<div class="meridian-teaser-img"><div class="meridian-teaser-img-placeholder">No image yet</div></div>`;
+
+        wrap.innerHTML = `
+          <div class="meridian-teaser-inner">
+            ${imgHTML}
+            <div class="meridian-teaser-content">
+              <div class="meridian-teaser-eyebrow">Meridian</div>
+              <div class="meridian-teaser-month">${current.month} ${current.year}</div>
+              <div class="meridian-teaser-title">${current.title}</div>
+              <div class="meridian-teaser-blurb">${current.blurb}</div>
+              <a href="/meridian.html" class="meridian-teaser-link">Read this month →</a>
+            </div>
+          </div>
+        `;
+      } catch {}
+    }
+
+    loadMeridianTeaser();
   </script>
 
 </body>
