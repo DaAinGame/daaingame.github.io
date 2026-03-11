@@ -39,7 +39,6 @@
       opacity: 0.5;
     }
 
-    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -82,7 +81,6 @@
     .nav-links a:hover,
     .nav-links a.active { color: var(--accent); }
 
-    /* BREADCRUMB */
     .breadcrumb {
       position: relative;
       z-index: 1;
@@ -108,7 +106,6 @@
     .breadcrumb a:hover { color: var(--accent); }
     .breadcrumb span { color: var(--accent); }
 
-    /* PAGE HEADER */
     .page-header {
       position: relative;
       z-index: 1;
@@ -156,7 +153,6 @@
 
     .photo-count span { color: var(--accent); }
 
-    /* GALLERY GRID */
     .gallery-section {
       position: relative;
       z-index: 1;
@@ -238,7 +234,6 @@
       transform: translateY(0);
     }
 
-    /* Empty state */
     .empty-state {
       position: relative;
       z-index: 1;
@@ -250,7 +245,6 @@
     .empty-state-icon { font-size: 3rem; opacity: 0.2; margin-bottom: 1rem; }
     .empty-state p { font-size: 0.8rem; letter-spacing: 0.15em; }
 
-    /* LIGHTBOX */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -362,7 +356,6 @@
       text-transform: uppercase;
     }
 
-    /* Loading state */
     .loading {
       position: relative;
       z-index: 1;
@@ -374,7 +367,6 @@
       text-transform: uppercase;
     }
 
-    /* FOOTER */
     footer {
       position: relative;
       z-index: 1;
@@ -396,13 +388,11 @@
     .footer-logo span { color: var(--accent); }
     .footer-copy { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); }
 
-    /* ANIMATIONS */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* RESPONSIVE */
     @media (max-width: 900px) {
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -439,13 +429,13 @@
     <span>›</span>
     <a href="../gallery.html">Gallery</a>
     <span>›</span>
-    <span>Wildlife</span>
+    <span>Wanderings</span>
   </div>
 
   <div class="page-header">
     <p class="page-eyebrow">Category 02</p>
     <h1 class="page-title">Wild<em>life</em></h1>
-    <p class="page-sub">Birds, squirrels, to the humble house cat caught anywhere from the backyard to the local state park.</p>
+    <p class="page-sub">From a humble housecat in the backyard, to birds and deer at the local state park.</p>
     <p class="photo-count">Loading photos<span>...</span></p>
   </div>
 
@@ -455,7 +445,6 @@
     </div>
   </section>
 
-  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" id="lightbox-close">✕</button>
     <button class="lightbox-prev" id="lightbox-prev">‹</button>
@@ -473,7 +462,6 @@
   </footer>
 
   <script>
-    // ─── Starfield ───────────────────────────────────────────────
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -514,7 +502,6 @@
     requestAnimationFrame(drawStars);
     window.addEventListener('resize', () => { resize(); initStars(); });
 
-    // ─── Gallery ─────────────────────────────────────────────────
     let photos = [];
     let currentIndex = 0;
 
@@ -541,8 +528,8 @@
 
         grid.innerHTML = photos.map((photo, i) => `
           <div class="gallery-item" data-index="${i}">
-            <img 
-              src="../images/gallery/wildlife/${photo.filename}" 
+            <img
+              src="../images/gallery/wildlife/${photo.filename}"
               alt="${photo.caption || photo.filename}"
               loading="lazy"
             />
@@ -553,7 +540,6 @@
           </div>
         `).join('');
 
-        // Attach click handlers
         document.querySelectorAll('.gallery-item').forEach(item => {
           item.addEventListener('click', () => openLightbox(parseInt(item.dataset.index)));
         });
@@ -568,11 +554,10 @@
       }
     }
 
-    // ─── Lightbox ────────────────────────────────────────────────
-    const lightbox     = document.getElementById('lightbox');
-    const lightboxImg  = document.getElementById('lightbox-img');
-    const lightboxCap  = document.getElementById('lightbox-caption');
-    const lightboxCtr  = document.getElementById('lightbox-counter');
+    const lightbox    = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCap = document.getElementById('lightbox-caption');
+    const lightboxCtr = document.getElementById('lightbox-counter');
 
     function openLightbox(index) {
       currentIndex = index;
@@ -588,7 +573,7 @@
 
     function updateLightbox() {
       const photo = photos[currentIndex];
-      lightboxImg.src = `../images/gallery/astro/${photo.filename}`;
+      lightboxImg.src = `../images/gallery/wildlife/${photo.filename}`;
       lightboxImg.alt = photo.caption || photo.filename;
       lightboxCap.textContent = photo.caption || '';
       lightboxCtr.textContent = `${currentIndex + 1} / ${photos.length}`;
@@ -608,12 +593,10 @@
     document.getElementById('lightbox-prev').addEventListener('click', prevPhoto);
     document.getElementById('lightbox-next').addEventListener('click', nextPhoto);
 
-    // Close on background click
     lightbox.addEventListener('click', e => {
       if (e.target === lightbox) closeLightbox();
     });
 
-    // Keyboard navigation
     document.addEventListener('keydown', e => {
       if (!lightbox.classList.contains('active')) return;
       if (e.key === 'Escape') closeLightbox();
