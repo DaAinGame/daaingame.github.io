@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Maclaskey Photo</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0f'/><text y='.9em' font-size='80' x='50%' dominant-baseline='middle' text-anchor='middle' fill='%23c8a96e'>✦</text></svg>"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: rgba(255,255,255,0.07);
+      --text: #ffffff;
+      --muted: #c8c8d8;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      overflow-x: hidden;
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    /* Page */
+    main {
+      position: relative;
+      z-index: 1;
+      padding-top: 7rem;
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 5rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 6rem;
+      align-items: start;
+      border-top: 1px solid var(--border);
+    }
+
+    .intro-text h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .intro-text h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .intro-text p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+
+    .intro-text p:last-child { margin-bottom: 0; }
+
+    .intro-photo {
+      position: relative;
+    }
+
+    .intro-photo img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(20%);
+    }
+
+    .intro-photo::before {
+      content: '';
+      position: absolute;
+      inset: -8px -8px 8px 8px;
+      border: 1px solid rgba(200,169,110,0.2);
+      z-index: -1;
+    }
+
+    .intro-photo-caption {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      opacity: 0.45;
+      text-align: right;
+      margin-top: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    /* ── GEAR ── */
+    .gear-section {
+      border-top: 1px solid var(--border);
+    }
+
+    .gear-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .gear-category {
+      background: var(--bg);
+      padding: 2rem 2rem 2.5rem;
+    }
+
+    .gear-category-title {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gear-item {
+      margin-bottom: 1.25rem;
+    }
+
+    .gear-item:last-child { margin-bottom: 0; }
+
+    .gear-item-name {
+      font-size: 0.75rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+      line-height: 1.4;
+    }
+
+    .gear-item-detail {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+    }
+
+    .gear-note {
+      margin-top: 1.5rem;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      font-style: italic;
+      opacity: 0.6;
+      line-height: 1.7;
+    }
+
+    /* ── CTA ── */
+    .cta-strip {
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 3rem 0;
+    }
+
+    .cta-strip p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      max-width: 40ch;
+      line-height: 1.4;
+    }
+
+    .cta-strip p em { color: var(--accent); font-style: italic; }
+
+    .cta-links {
+      display: flex;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.85rem 1.75rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+
+    .cta-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .cta-btn.primary {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cta-btn.primary:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-copy {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .intro { grid-template-columns: 1fr; gap: 3rem; }
+      .intro-photo { max-width: 360px; }
+      .gear-grid { grid-template-columns: 1fr; }
+      .cta-strip { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <nav>
+    <a href="/index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
+    <ul class="nav-links">
+      <li><a href="/gallery.html">Gallery</a></li>
+      <li><a href="/about.html" class="active">About</a></li>
+      <li><a href="/meridian.html">Meridian</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- INTRO -->
+    <section>
+      <div class="intro">
+        <div class="intro-text">
+          <p class="section-label">About</p>
+          <h1>Hi, I'm <em>Timothy</em> —<br>I photograph things<br>that move me.</h1>
+          <p>It started in fifth or sixth grade, in a photography unit that most kids probably forgot about by the next week. I didn't. I remember walking around our small Kansas town with a camera, looking for something worth keeping. I found it in a lonely, decrepit barn sitting in a hayfield, shot through a barbed wire fence in black and white. My teacher liked it enough to offer to buy it. That was the moment.</p>
+          <p>I took every photography class I could after that through high school and into college. The gear changed, the subjects changed, but the feeling never did. That quiet satisfaction of finding a frame in something ordinary. Of telling a story.</p>
+          <p>Astrophotography came more recently. I've always had a thing for space. Hubble images, NASA missions, the James Webb. I'm particularly in love with the Pillars of Creation, my ultimate goal to capture them someday. One night I went out to shoot the Milky Way untracked, just to see what would happen. What happened was I got completely hooked. I bought a tracker the next week. The first images were, to put it nicely, rough. Noisy, soft, humbling. But over the past eight months I've refined my skills and my process, and now I can't imagine not going out on a clear night.</p>
+          <p>There's something I love about standing under the sky and being a little more familiar with it each time. Knowing which constellation that is. Getting polar aligned, framing up, and then seeing that faint glow appear on the LCD. A galaxy or nebula that's been out there for millions of years, and I just caught a little of its light. That never gets old.</p>
+          <p>This site is a living archive of all of it. New work goes up as it gets made.</p>
+        </div>
+        <div class="intro-photo">
+          <img src="/images/aboutphoto.jpg" alt="Timothy Maclaskey"/>
+          <p class="intro-photo-caption">Timothy Maclaskey &nbsp;·&nbsp; Kansas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GEAR -->
+    <section class="gear-section">
+      <p class="section-label">The Kit</p>
+      <div class="gear-grid">
+
+        <div class="gear-category">
+          <div class="gear-category-title">Camera Body</div>
+          <div class="gear-item">
+            <div class="gear-item-name">Canon EOS M50 Mark II</div>
+            <div class="gear-item-detail">APS-C mirrorless · 24.1MP</div>
+          </div>
+        </div>
+
+        <div class="gear-category">
+          <div class="gear-category-title">Lenses</div>
+          <div class="gear-item">
+            <div class="gear-item-name">Canon EF-S 18–55mm f/3.5–5.6 IS II</div>
+            <div class="gear-item-detail">Everyday wide zoom</div>
+          </div>
+          <div class="gear-item">
+            <div class="gear-item-name">Canon EF 28–135mm f/3.5–5.6 IS USM</div>
+            <div class="gear-item-detail">Versatile mid-range zoom</div>
+          </div>
+          <div class="gear-item">
+            <div class="gear-item-name">Canon FD 300mm f/4</div>
+            <div class="gear-item-detail">Manual prime · astrophotography workhorse</div>
+          </div>
+          <div class="gear-item">
+            <div class="gear-item-name">Sigma 170–500mm APO f/5–6.3</div>
+            <div class="gear-item-detail">Wildlife telephoto</div>
+          </div>
+        </div>
+
+        <div class="gear-category">
+          <div class="gear-category-title">Support</div>
+          <div class="gear-item">
+            <div class="gear-item-name">Sky-Watcher Star Adventurer GTI</div>
+            <div class="gear-item-detail">Tracking mount · goto capable</div>
+          </div>
+          <div class="gear-item">
+            <div class="gear-item-name">SIRUI Traveler 7C</div>
+            <div class="gear-item-detail">Carbon fiber travel tripod</div>
+          </div>
+          <div class="gear-item">
+            <div class="gear-item-name">Telescope</div>
+            <div class="gear-item-detail">Coming soon — currently saving</div>
+          </div>
+        </div>
+
+      </div>
+      <p class="gear-note">Gear is a means to an end. The 300mm FD lens is manual focus, old, and not particularly glamorous — but it's responsible for most of the astrophotography on this site.</p>
+    </section>
+
+    <!-- CTA -->
+    <section>
+      <div class="cta-strip">
+        <p>Want to see the work, or just say <em>hello?</em></p>
+        <div class="cta-links">
+          <a href="/gallery.html" class="cta-btn">View gallery →</a>
+          <a href="/contact.html" class="cta-btn primary">Get in touch →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-logo">Maclaskey<span>Photo</span></div>
+    <div class="footer-copy">© 2026 Timothy Maclaskey &nbsp;·&nbsp; maclaskeyphoto.com</div>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 180; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.7 + 0.1,
+          speed: Math.random() * 0.015 + 0.005,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        const opacity = s.o * (0.6 + 0.4 * Math.sin(t * s.speed + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,180,140,${opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+
+    resize();
+    initStars();
+    requestAnimationFrame(drawStars);
+    window.addEventListener('resize', () => { resize(); initStars(); });
+  </script>
+
+</body>
+</html>
