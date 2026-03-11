@@ -16,46 +16,51 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate photos.json for each category
+      - name: Generate photos.json for each category (preserving captions)
         run: |
-          GALLERY_DIR="images/gallery"
-          EXTENSIONS="jpg jpeg png gif webp JPG JPEG PNG GIF WEBP"
+          python3 << 'EOF'
+          import os
+          import json
 
-          for CATEGORY_PATH in "$GALLERY_DIR"/*/; do
-            CATEGORY=$(basename "$CATEGORY_PATH")
-            OUTPUT="$CATEGORY_PATH/photos.json"
+          GALLERY_DIR = "images/gallery"
+          EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 
-            echo "Processing: $CATEGORY"
+          for category in os.listdir(GALLERY_DIR):
+            category_path = os.path.join(GALLERY_DIR, category)
+            if not os.path.isdir(category_path):
+              continue
 
-            # Build JSON array of photo objects
-            JSON="["
-            FIRST=true
+            output_path = os.path.join(category_path, "photos.json")
 
-            for EXT in $EXTENSIONS; do
-              for FILE in "$CATEGORY_PATH"*."$EXT"; do
-                [ -f "$FILE" ] || continue
-                FILENAME=$(basename "$FILE")
+            # Load existing captions so we don't lose them
+            existing_captions = {}
+            if os.path.exists(output_path):
+              try:
+                with open(output_path, "r") as f:
+                  existing = json.load(f)
+                  for entry in existing:
+                    if entry.get("caption"):
+                      existing_captions[entry["filename"]] = entry["caption"]
+              except Exception:
+                pass  # If malformed, start fresh
 
-                # Skip the manifest itself just in case
-                [ "$FILENAME" = "photos.json" ] && continue
+            # Scan for image files
+            photos = []
+            for filename in sorted(os.listdir(category_path)):
+              ext = os.path.splitext(filename)[1].lower()
+              if ext not in EXTENSIONS:
+                continue
+              photos.append({
+                "filename": filename,
+                "caption": existing_captions.get(filename, "")
+              })
 
-                if [ "$FIRST" = true ]; then
-                  FIRST=false
-                else
-                  JSON="$JSON,"
-                fi
+            with open(output_path, "w") as f:
+              json.dump(photos, f, indent=2)
 
-                # Each entry has filename and an empty caption field
-                # Caption can be filled in manually later per photo
-                JSON="$JSON{\"filename\":\"$FILENAME\",\"caption\":\"\"}"
-              done
-            done
+            print(f"  {category}: {len(photos)} photos, {len(existing_captions)} captions preserved")
 
-            JSON="$JSON]"
-
-            echo "$JSON" > "$OUTPUT"
-            echo "  Written: $OUTPUT"
-          done
+          EOF
 
       - name: Commit and push manifests
         run: |
