@@ -152,35 +152,31 @@
     .intro-text p:last-child { margin-bottom: 0; }
 
     .intro-photo {
-      position: relative;
-    }
+  position: relative;
+  padding: 0 12px 12px 0;
+}
 
-    .intro-photo img {
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      display: block;
-      filter: grayscale(20%);
-      object-position: 60% top;
-    }
+.intro-photo::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  border: 1px solid rgba(200,169,110,0.2);
+  z-index: 0;
+}
 
-    .intro-photo::before {
-      content: '';
-      position: absolute;
-      inset: 8px -8px 8px 8px;
-      border: 1px solid rgba(200,169,110,0.2);
-      z-index: -1;
-    }
-
-    .intro-photo-caption {
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      opacity: 0.45;
-      text-align: right;
-      margin-top: 0.75rem;
-      text-transform: uppercase;
-    }
+.intro-photo img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%);
+  object-position: center top;
+}
 
     /* ── GEAR ── */
     .gear-section {
