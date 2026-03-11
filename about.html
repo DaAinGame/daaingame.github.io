@@ -151,31 +151,18 @@
 
     .intro-text p:last-child { margin-bottom: 0; }
 
-    .intro-photo {
+.intro-photo {
   position: relative;
-  padding: 0 12px 12px 0;
-}
-
-.intro-photo::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: calc(100% - 12px);
-  height: calc(100% - 12px);
-  border: 1px solid rgba(200,169,110,0.2);
-  z-index: 0;
 }
 
 .intro-photo img {
-  position: relative;
-  z-index: 1;
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   display: block;
   filter: grayscale(20%);
   object-position: center top;
+  box-shadow: 10px 10px 0px rgba(200,169,110,0.25);
 }
 
     /* ── GEAR ── */
