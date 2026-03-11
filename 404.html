@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 — Maclaskey Photo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --border: rgba(255,255,255,0.07);
+      --text: #ffffff;
+      --muted: #c8c8d8;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.15);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    #starfield {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Drifting astronaut */
+    .astronaut {
+  position: relative;
+  z-index: 1;
+  font-size: 5rem;
+  color: var(--accent);
+  animation: drift 8s ease-in-out infinite;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 30px rgba(200,169,110,0.5));
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 2rem;
+      max-width: 600px;
+    }
+
+    .error-code {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(6rem, 20vw, 12rem);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.15;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+
+    .title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .message {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.9;
+      max-width: 420px;
+    }
+
+    .coords {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      opacity: 0.5;
+      font-family: monospace;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.9rem 2rem;
+      margin-top: 0.5rem;
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
+    }
+
+    .home-link:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .home-link::before {
+      content: '←';
+      transition: transform 0.3s;
+    }
+
+    .home-link:hover::before {
+      transform: translateX(-4px);
+    }
+
+    /* Transmission blinking cursor effect */
+    .blink {
+      animation: blink 1.2s step-end infinite;
+      color: var(--accent);
+    }
+
+    /* Animations */
+    @keyframes drift {
+      0%   { transform: translateY(0px) rotate(-5deg); }
+      25%  { transform: translateY(-18px) rotate(3deg); }
+      50%  { transform: translateY(-8px) rotate(-2deg); }
+      75%  { transform: translateY(-22px) rotate(6deg); }
+      100% { transform: translateY(0px) rotate(-5deg); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .content > * {
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .content > *:nth-child(1) { animation-delay: 0.1s; }
+    .content > *:nth-child(2) { animation-delay: 0.25s; }
+    .content > *:nth-child(3) { animation-delay: 0.4s; }
+    .content > *:nth-child(4) { animation-delay: 0.55s; }
+    .content > *:nth-child(5) { animation-delay: 0.7s; }
+    .content > *:nth-child(6) { animation-delay: 0.85s; }
+    .content > *:nth-child(7) { animation-delay: 1s; }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <div class="error-code">404</div>
+
+  <div class="astronaut">✦</div>
+
+  <div class="content">
+    <p class="eyebrow">Signal Lost</p>
+    <h1 class="title">You've drifted beyond<br>the <em>observable universe</em></h1>
+    <div class="divider"></div>
+    <p class="message">
+      Houston, we have a problem. The page you're looking for has either collapsed 
+      into a black hole, is still forming in a stellar nursery somewhere, or simply 
+      never existed in this universe to begin with.
+    </p>
+    <p class="coords">RA 00h 42m 44s · DEC +41° 16′ 9″ <span class="blink">█</span></p>
+    <a href="/index.html" class="home-link">Return to known space</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 220; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.4 + 0.2,
+          o: Math.random() * 0.8 + 0.1,
+          speed: Math.random() * 0.015 + 0.004,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        const opacity = s.o * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,180,140,${opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+
+    resize();
+    initStars();
+    requestAnimationFrame(drawStars);
+    window.addEventListener('resize', () => { resize(); initStars(); });
+  </script>
+
+</body>
+</html>
