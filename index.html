@@ -278,7 +278,7 @@
 
     .genres-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(7, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -287,10 +287,13 @@
     .genre-item {
       background: var(--bg);
       padding: 2.5rem 2rem;
-      cursor: default;
+      cursor: pointer;
       transition: background 0.3s;
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
     .genre-item::before {
@@ -524,41 +527,41 @@
     <div class="genres">
       <p class="section-label">What I Shoot</p>
       <div class="genres-grid">
-        <div class="genre-item featured">
+        <a href="gallery/astro.html" class="genre-item featured">
           <span class="genre-icon">✦</span>
           <div class="genre-name">Astrophotography</div>
           <div class="genre-desc">Deep sky objects, Milky Way, star trails, and planetary work from dark Kansas skies.</div>
-        </div>
-        <div class="genre-item featured">
+        </a>
+        <a href="gallery/wildlife.html" class="genre-item featured">
           <span class="genre-icon">◈</span>
           <div class="genre-name">Wildlife</div>
           <div class="genre-desc">Birds, mammals, and whatever crosses the frame. Patient work, fast glass.</div>
-        </div>
-        <div class="genre-item">
+        </a>
+        <a href="gallery/landscape.html" class="genre-item">
           <span class="genre-icon">◻</span>
           <div class="genre-name">Landscape</div>
           <div class="genre-desc">Wide vistas and quiet scenes, mostly local with occasional travel.</div>
-        </div>
-        <div class="genre-item">
+        </a>
+        <a href="gallery/macro.html" class="genre-item">
           <span class="genre-icon">⊕</span>
           <div class="genre-name">Macro</div>
           <div class="genre-desc">The small world up close — insects, flora, textures.</div>
-        </div>
-        <div class="genre-item">
+        </a>
+        <a href="gallery/urban.html" class="genre-item">
           <span class="genre-icon">◯</span>
           <div class="genre-name">Urban</div>
           <div class="genre-desc">Architecture, street, and the geometry of built environments.</div>
-        </div>
-        <div class="genre-item">
+        </a>
+        <a href="gallery/portraits.html" class="genre-item">
           <span class="genre-icon">◑</span>
           <div class="genre-name">Portraits</div>
           <div class="genre-desc">People, light, and the space between.</div>
-        </div>
-        <div class="genre-item">
+        </a>
+        <a href="gallery/digitalworlds.html" class="genre-item">
           <span class="genre-icon">⬡</span>
           <div class="genre-name">Digital Worlds</div>
           <div class="genre-desc">In-game photography — virtual landscapes, characters, and moments from interactive worlds.</div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
