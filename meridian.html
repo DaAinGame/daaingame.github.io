@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meridian — Maclaskey Photo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: rgba(255,255,255,0.07);
+      --text: #ffffff;
+      --muted: #c8c8d8;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    #starfield {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    /* PAGE HEADER */
+    .page-header {
+      position: relative;
+      z-index: 1;
+      padding: 8rem 3rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      animation: fadeUp 0.8s 0.2s ease both;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+    }
+
+    .header-left {}
+
+    .page-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+
+    .page-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .page-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+      max-width: 380px;
+      text-align: right;
+    }
+
+    /* CURRENT MONTH FEATURE */
+    .feature {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .feature-image-wrap {
+      position: relative;
+    }
+
+    .feature-month-label {
+      position: absolute;
+      top: -1.5rem;
+      left: 0;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .feature-image {
+      width: 100%;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      display: block;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .feature-image:hover {
+      border-color: var(--accent);
+    }
+
+    /* Placeholder for when no image exists */
+    .feature-placeholder {
+      width: 100%;
+      aspect-ratio: 3/2;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .feature-placeholder-icon { font-size: 2.5rem; opacity: 0.2; }
+
+    .feature-text {
+      padding-top: 1.5rem;
+    }
+
+    .feature-date {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .feature-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .feature-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-blurb {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 2;
+      letter-spacing: 0.05em;
+    }
+
+    /* LIGHTBOX for featured image */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 1px solid var(--border);
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .lightbox.active img { transform: scale(1); }
+
+    .lightbox-close {
+      position: fixed;
+      top: 2rem; right: 2rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 2.5rem; height: 2.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s, color 0.3s;
+      z-index: 1001;
+    }
+
+    .lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ARCHIVE — CONSTELLATION */
+    .archive {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 3rem 6rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .archive-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .archive-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .archive-label::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    .archive-hint {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* Constellation canvas container */
+    .constellation-wrap {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    #constellation-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Star tooltip */
+    .star-tooltip {
+      position: absolute;
+      z-index: 10;
+      background: rgba(10,10,15,0.95);
+      border: 1px solid var(--accent);
+      padding: 0.75rem 1rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      min-width: 160px;
+      transform: translate(-50%, -110%);
+    }
+
+    .star-tooltip.visible { opacity: 1; }
+
+    .tooltip-month {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .tooltip-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .tooltip-thumb {
+      width: 100%;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+      display: block;
+      border: 1px solid var(--border);
+    }
+
+    .tooltip-placeholder-thumb {
+      width: 100%;
+      aspect-ratio: 3/2;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+    }
+
+    /* Mobile fallback grid */
+    .archive-grid {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .archive-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.3s, background 0.3s;
+      display: block;
+    }
+
+    .archive-card:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .archive-card-date {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .archive-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .footer-logo span { color: var(--accent); }
+    .footer-copy { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .feature { grid-template-columns: 1fr; gap: 2rem; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .page-desc { text-align: left; }
+      .constellation-wrap { display: none; }
+      .archive-grid { display: grid; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .page-header { padding: 7rem 1.5rem 2rem; }
+      .feature { padding: 3rem 1.5rem; }
+      .archive { padding: 2rem 1.5rem 4rem; }
+      .archive-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
+    <ul class="nav-links">
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="meridian.html" class="active">Meridian</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="header-left">
+      <p class="page-eyebrow">Monthly Feature</p>
+      <h1 class="page-title">Me<em>ridian</em></h1>
+    </div>
+    <p class="page-desc">One photo. One month. The story behind the frame — in my own words.</p>
+  </div>
+
+  <!-- CURRENT FEATURE -->
+  <section class="feature" id="current">
+  </section>
+
+  <!-- ARCHIVE -->
+  <section class="archive">
+    <div class="archive-header">
+      <p class="archive-label">Archive</p>
+      <p class="archive-hint">Hover a star to preview · Click to read</p>
+    </div>
+
+    <!-- Constellation (desktop) -->
+    <div class="constellation-wrap">
+      <canvas id="constellation-canvas"></canvas>
+      <div class="star-tooltip" id="star-tooltip">
+        <div class="tooltip-month" id="tooltip-month"></div>
+        <div class="tooltip-title" id="tooltip-title"></div>
+        <div id="tooltip-thumb-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Grid fallback (mobile) -->
+    <div class="archive-grid" id="archive-grid"></div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">✕</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <footer>
+    <div class="footer-logo">Maclaskey<span>Photo</span></div>
+    <div class="footer-copy">© 2026 Timothy Maclaskey &nbsp;·&nbsp; maclaskeyphoto.com</div>
+  </footer>
+
+  <script>
+    // ─── Starfield ────────────────────────────────────────────────
+    const sfCanvas = document.getElementById('starfield');
+    const sfCtx = sfCanvas.getContext('2d');
+    let sfStars = [];
+
+    function sfResize() {
+      sfCanvas.width = window.innerWidth;
+      sfCanvas.height = window.innerHeight;
+    }
+
+    function sfInit() {
+      sfStars = [];
+      for (let i = 0; i < 180; i++) {
+        sfStars.push({
+          x: Math.random() * sfCanvas.width,
+          y: Math.random() * sfCanvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.7 + 0.1,
+          speed: Math.random() * 0.015 + 0.005,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function sfDraw(t) {
+      sfCtx.clearRect(0, 0, sfCanvas.width, sfCanvas.height);
+      sfStars.forEach(s => {
+        const opacity = s.o * (0.6 + 0.4 * Math.sin(t * s.speed + s.phase));
+        sfCtx.beginPath();
+        sfCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sfCtx.fillStyle = `rgba(200,180,140,${opacity})`;
+        sfCtx.fill();
+      });
+      requestAnimationFrame(sfDraw);
+    }
+
+    sfResize(); sfInit(); requestAnimationFrame(sfDraw);
+    window.addEventListener('resize', () => { sfResize(); sfInit(); });
+
+    // ─── Load Data ───────────────────────────────────────────────
+    let entries = [];
+
+    async function init() {
+      try {
+        const res = await fetch('meridian.json');
+        entries = await res.json();
+      } catch(e) {
+        entries = [];
+      }
+      renderFeature();
+      renderConstellation();
+      renderArchiveGrid();
+    }
+
+    // ─── Feature (current month) ─────────────────────────────────
+    function renderFeature() {
+      const section = document.getElementById('current');
+
+      if (!entries.length) {
+        section.innerHTML = `<p style="color:var(--muted);font-size:0.8rem;letter-spacing:0.15em;">No entries yet — check back soon.</p>`;
+        return;
+      }
+
+      const entry = entries[0];
+      const hasImage = entry.filename && entry.filename !== '';
+
+      section.innerHTML = `
+        <div class="feature-image-wrap">
+          <div class="feature-month-label">${entry.month} ${entry.year} &nbsp;·&nbsp; Current</div>
+          ${hasImage
+            ? `<img class="feature-image" src="images/meridian/${entry.filename}" alt="${entry.title}" id="feature-img" />`
+            : `<div class="feature-placeholder">
+                <span class="feature-placeholder-icon">✦</span>
+                Photo coming soon
+               </div>`
+          }
+        </div>
+        <div class="feature-text">
+          <div class="feature-date">${entry.month} ${entry.year}</div>
+          <h2 class="feature-title">${entry.title}</h2>
+          <div class="feature-divider"></div>
+          <p class="feature-blurb">${entry.blurb}</p>
+        </div>
+      `;
+
+      if (hasImage) {
+        document.getElementById('feature-img').addEventListener('click', () => openLightbox(`images/meridian/${entry.filename}`));
+      }
+    }
+
+    // ─── Lightbox ────────────────────────────────────────────────
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ─── Constellation Archive ───────────────────────────────────
+    function renderConstellation() {
+      const wrap = document.querySelector('.constellation-wrap');
+      const canvas = document.getElementById('constellation-canvas');
+      const tooltip = document.getElementById('star-tooltip');
+      const tooltipMonth = document.getElementById('tooltip-month');
+      const tooltipTitle = document.getElementById('tooltip-title');
+      const tooltipThumbWrap = document.getElementById('tooltip-thumb-wrap');
+
+      if (!wrap || !canvas) return;
+
+      // Archive entries = all except the first (current)
+      const archive = entries.slice(1);
+      if (!archive.length) {
+        wrap.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;">Archive will appear here as months are added</div>`;
+        return;
+      }
+
+      const ctx = canvas.getContext('2d');
+      let W, H, stars;
+
+      function buildStars() {
+        W = canvas.width = wrap.offsetWidth;
+        H = canvas.height = wrap.offsetHeight;
+        if (W === 0 || H === 0) {
+          requestAnimationFrame(buildStars);
+          return;
+        }
+        stars = archive.map((entry, i) => ({
+          entry,
+          x: (entry.star_x / 100) * W,
+          y: (entry.star_y / 100) * H,
+          r: 4,
+          pulsePhase: Math.random() * Math.PI * 2
+        }));
+      }
+
+      function drawConstellation(t) {
+        ctx.clearRect(0, 0, W, H);
+
+        // Draw faint background stars
+        for (let i = 0; i < 60; i++) {
+          const bx = ((i * 137.5) % 100) / 100 * W;
+          const by = ((i * 97.3) % 100) / 100 * H;
+          const bo = 0.08 + 0.06 * Math.sin(t * 0.003 + i);
+          ctx.beginPath();
+          ctx.arc(bx, by, 0.8, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200,180,140,${bo})`;
+          ctx.fill();
+        }
+
+        // Draw connecting lines between stars
+        if (stars.length > 1) {
+          ctx.beginPath();
+          ctx.moveTo(stars[0].x, stars[0].y);
+          for (let i = 1; i < stars.length; i++) {
+            ctx.lineTo(stars[i].x, stars[i].y);
+          }
+          ctx.strokeStyle = 'rgba(200,169,110,0.15)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 6]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // Draw archive stars
+        stars.forEach((s, i) => {
+          const pulse = 0.6 + 0.4 * Math.sin(t * 0.002 + s.pulsePhase);
+
+          // Outer glow
+          const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
+          grd.addColorStop(0, `rgba(200,169,110,${0.25 * pulse})`);
+          grd.addColorStop(1, 'rgba(200,169,110,0)');
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2);
+          ctx.fillStyle = grd;
+          ctx.fill();
+
+          // Star core
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200,169,110,${0.7 + 0.3 * pulse})`;
+          ctx.fill();
+
+          // Month label
+          ctx.fillStyle = `rgba(200,169,110,0.5)`;
+          ctx.font = '9px Josefin Sans, sans-serif';
+          ctx.letterSpacing = '0.15em';
+          ctx.textAlign = 'center';
+          ctx.fillText(`${s.entry.month.toUpperCase().slice(0,3)} ${s.entry.year}`, s.x, s.y + s.r * 3.5);
+        });
+
+        requestAnimationFrame(drawConstellation);
+      }
+
+      buildStars();
+      requestAnimationFrame(drawConstellation);
+      window.addEventListener('resize', buildStars);
+
+      // Mouse interaction
+      canvas.addEventListener('mousemove', e => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        let hovered = null;
+        stars.forEach(s => {
+          const dist = Math.hypot(mx - s.x, my - s.y);
+          if (dist < 16) hovered = s;
+        });
+
+        if (hovered) {
+          canvas.style.cursor = 'pointer';
+          tooltipMonth.textContent = `${hovered.entry.month} ${hovered.entry.year}`;
+          tooltipTitle.textContent = hovered.entry.title;
+
+          const hasImg = hovered.entry.filename && hovered.entry.filename !== '';
+          tooltipThumbWrap.innerHTML = hasImg
+            ? `<img class="tooltip-thumb" src="images/meridian/${hovered.entry.filename}" alt="${hovered.entry.title}" />`
+            : `<div class="tooltip-placeholder-thumb">No image yet</div>`;
+
+          // Position tooltip
+          const tx = hovered.x;
+          const ty = hovered.y;
+          tooltip.style.left = `${tx}px`;
+          tooltip.style.top = `${ty}px`;
+          tooltip.classList.add('visible');
+        } else {
+          canvas.style.cursor = 'default';
+          tooltip.classList.remove('visible');
+        }
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('visible');
+        canvas.style.cursor = 'default';
+      });
+
+      canvas.addEventListener('click', e => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+
+        stars.forEach(s => {
+          const dist = Math.hypot(mx - s.x, my - s.y);
+          if (dist < 16) {
+            window.location.href = `meridian/${s.entry.id}.html`;
+          }
+        });
+      });
+    }
+
+    // ─── Mobile Archive Grid ─────────────────────────────────────
+    function renderArchiveGrid() {
+      const grid = document.getElementById('archive-grid');
+      const archive = entries.slice(1);
+
+      if (!archive.length) {
+        grid.innerHTML = `<p style="color:var(--muted);font-size:0.75rem;letter-spacing:0.15em;grid-column:1/-1;">Archive will appear here as months are added.</p>`;
+        return;
+      }
+
+      grid.innerHTML = archive.map(entry => `
+        <a href="meridian/${entry.id}.html" class="archive-card">
+          <div class="archive-card-date">${entry.month} ${entry.year}</div>
+          <div class="archive-card-title">${entry.title}</div>
+        </a>
+      `).join('');
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
