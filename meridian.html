@@ -663,28 +663,29 @@
       const ctx = canvas.getContext('2d');
       let W, H, navStars;
 
-      // ── Orion star positions — visually placed to match star charts ──
-      // Canvas is landscape. North=up, West=right (as seen facing south)
+      // ── Orion star positions — mapped from reference image ──
       const ORION_NAV = [
-        { name: 'Meissa',     x: 50,  y: 12  },  // 0  head
-        { name: 'Betelgeuse', x: 33,  y: 30  },  // 1  left shoulder
-        { name: 'Bellatrix',  x: 62,  y: 28  },  // 2  right shoulder
-        { name: 'Mintaka',    x: 63,  y: 52  },  // 3  belt right
-        { name: 'Alnilam',    x: 50,  y: 54  },  // 4  belt center
-        { name: 'Alnitak',    x: 38,  y: 56  },  // 5  belt left
-        { name: 'Hatsya',     x: 46,  y: 68  },  // 6  sword
-        { name: 'Rigel',      x: 68,  y: 78  },  // 7  right foot
-        { name: 'Saiph',      x: 35,  y: 80  },  // 8  left foot
-        { name: 'Pi3 Ori',    x: 75,  y: 18  },  // 9  right arm/club
-        { name: 'Thabit',     x: 22,  y: 48  },  // 10 shield upper
-        { name: 'Tabit',      x: 18,  y: 62  },  // 11 shield lower
+        { name: 'Meissa',     x: 45,  y: 10  },  // 0  head - top center-left
+        { name: 'Betelgeuse', x: 38,  y: 28  },  // 1  left shoulder
+        { name: 'Bellatrix',  x: 55,  y: 25  },  // 2  right shoulder
+        { name: 'Mintaka',    x: 57,  y: 50  },  // 3  belt right
+        { name: 'Alnilam',    x: 48,  y: 53  },  // 4  belt center
+        { name: 'Alnitak',    x: 40,  y: 56  },  // 5  belt left
+        { name: 'Hatsya',     x: 44,  y: 67  },  // 6  sword - below belt center
+        { name: 'Rigel',      x: 60,  y: 82  },  // 7  right foot - wide right
+        { name: 'Saiph',      x: 33,  y: 84  },  // 8  left foot - wide left
+        { name: 'Pi3 Ori',    x: 30,  y: 12  },  // 9  club top - upper LEFT (raised arm)
+        { name: 'Thabit',     x: 68,  y: 35  },  // 10 shield upper RIGHT
+        { name: 'Tabit',      x: 72,  y: 48  },  // 11 shield lower RIGHT
       ];
 
-      // ── Connecting lines matching real Orion constellation lines ──
+      // ── Connecting lines ──
       const ORION_LINES = [
+        [9, 1],   // club top → left shoulder (raised arm)
         [0, 1],   // head → left shoulder
         [0, 2],   // head → right shoulder
-        [2, 9],   // right shoulder → club/arm
+        [2, 10],  // right shoulder → shield upper
+        [10, 11], // shield upper → shield lower
         [1, 5],   // left shoulder → belt left
         [2, 3],   // right shoulder → belt right
         [3, 4],   // belt right → belt center
@@ -692,8 +693,6 @@
         [4, 6],   // belt center → sword
         [3, 7],   // belt right → right foot
         [5, 8],   // belt left → left foot
-        [1, 10],  // left shoulder → shield upper
-        [10, 11], // shield upper → shield lower
       ];
 
       // ── Faint background stars (decorative only) ──
