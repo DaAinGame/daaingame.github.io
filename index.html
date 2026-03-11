@@ -9,8 +9,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0f'/><text y='.9em' font-size='80' x='50%' dominant-baseline='middle' text-anchor='middle' fill='%23c8a96e'>✦</text></svg>"/>
 
   <!-- Meta -->
-  <meta name="description" content="The heavens declare the glory of God; the skies proclaim the work of his hands."/>
-  <meta name="author" content="Psalm 19:1"/>
+	<blockquote id="quote-text"></blockquote>
+	<div class="about-quote-attr" id="quote-attr"></div>
 
   <!-- Open Graph -->
   <meta property="og:type"        content="website"/>
@@ -848,6 +848,15 @@
     }
 
     loadPortfolio();
+
+fetch('/quotes.json')
+  .then(r => r.json())
+  .then(quotes => {
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quote-text').textContent = q.quote;
+    document.getElementById('quote-attr').textContent = '— ' + q.author;
+  })
+  .catch(() => {});
 
     // ── Meridian teaser ──────────────────────────────────────────
     async function loadMeridianTeaser() {
