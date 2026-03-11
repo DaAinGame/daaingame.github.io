@@ -5,9 +5,7 @@
     "year": "2026",
     "title": "Your Photo Title Here",
     "filename": "",
-    "blurb": "This is where your thoughts go. Write as much or as little as you like — what drew you to this shot, what conditions you were working in, what you were feeling when you pressed the shutter. This is your space to put the story behind the image into words.",
-    "star_x": 50,
-    "star_y": 45
+    "blurb": "This is where your thoughts go. Write as much or as little as you like — what drew you to this shot, what conditions you were working in, what you were feeling when you pressed the shutter. This is your space to put the story behind the image into words."
   },
   {
     "id": "2026-02",
@@ -15,9 +13,7 @@
     "year": "2026",
     "title": "The Long Exposure",
     "filename": "",
-    "blurb": "February placeholder entry.",
-    "star_x": 35,
-    "star_y": 30
+    "blurb": "February placeholder entry."
   },
   {
     "id": "2026-01",
@@ -25,9 +21,7 @@
     "year": "2026",
     "title": "Where It All Began",
     "filename": "",
-    "blurb": "January placeholder entry.",
-    "star_x": 55,
-    "star_y": 22
+    "blurb": "January placeholder entry."
   },
   {
     "id": "2025-12",
@@ -35,9 +29,7 @@
     "year": "2025",
     "title": "Winter Skies",
     "filename": "",
-    "blurb": "December placeholder entry.",
-    "star_x": 72,
-    "star_y": 33
+    "blurb": "December placeholder entry."
   },
   {
     "id": "2025-11",
@@ -45,9 +37,7 @@
     "year": "2025",
     "title": "Before the Frost",
     "filename": "",
-    "blurb": "November placeholder entry.",
-    "star_x": 78,
-    "star_y": 55
+    "blurb": "November placeholder entry."
   },
   {
     "id": "2025-10",
@@ -55,9 +45,7 @@
     "year": "2025",
     "title": "Golden Hour",
     "filename": "",
-    "blurb": "October placeholder entry.",
-    "star_x": 65,
-    "star_y": 68
+    "blurb": "October placeholder entry."
   },
   {
     "id": "2025-09",
@@ -65,9 +53,7 @@
     "year": "2025",
     "title": "The Quiet Season",
     "filename": "",
-    "blurb": "September placeholder entry.",
-    "star_x": 45,
-    "star_y": 72
+    "blurb": "September placeholder entry."
   },
   {
     "id": "2025-08",
@@ -75,9 +61,7 @@
     "year": "2025",
     "title": "Perseid Night",
     "filename": "",
-    "blurb": "August placeholder entry.",
-    "star_x": 28,
-    "star_y": 62
+    "blurb": "August placeholder entry."
   },
   {
     "id": "2025-07",
@@ -85,9 +69,7 @@
     "year": "2025",
     "title": "Midsummer Frame",
     "filename": "",
-    "blurb": "July placeholder entry.",
-    "star_x": 20,
-    "star_y": 45
+    "blurb": "July placeholder entry."
   },
   {
     "id": "2025-06",
@@ -95,8 +77,6 @@
     "year": "2025",
     "title": "First Light",
     "filename": "",
-    "blurb": "June placeholder entry.",
-    "star_x": 25,
-    "star_y": 28
+    "blurb": "June placeholder entry."
   }
 ]

@@ -654,7 +654,6 @@
 
       if (!wrap || !canvas) return;
 
-      // Archive entries = all except the first (current)
       const archive = entries.slice(1);
       if (!archive.length) {
         wrap.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;">Archive will appear here as months are added</div>`;
@@ -662,77 +661,127 @@
       }
 
       const ctx = canvas.getContext('2d');
-      let W, H, stars;
+      let W, H, navStars;
+
+      // ── Orion star positions (% of canvas, based on real sky coords) ──
+      // 12 well-spaced named stars used as nav points
+      const ORION_NAV = [
+        { name: 'Meissa',    x: 50, y: 8  },   // head
+        { name: 'Betelgeuse',x: 32, y: 28 },   // left shoulder
+        { name: 'Bellatrix', x: 64, y: 26 },   // right shoulder
+        { name: 'Pi3 Ori',   x: 76, y: 18 },   // right arm
+        { name: 'Mintaka',   x: 40, y: 48 },   // belt left
+        { name: 'Alnilam',   x: 50, y: 50 },   // belt center
+        { name: 'Alnitak',   x: 60, y: 52 },   // belt right
+        { name: 'Hatsya',    x: 54, y: 64 },   // sword
+        { name: 'Rigel',     x: 68, y: 76 },   // right foot
+        { name: 'Saiph',     x: 38, y: 78 },   // left foot
+        { name: 'Thabit',    x: 22, y: 55 },   // shield top
+        { name: 'Tabit',     x: 18, y: 68 },   // shield bottom
+      ];
+
+      // ── Orion connecting lines (pairs of nav star indices) ──
+      const ORION_LINES = [
+        [0, 1], [0, 2],           // head to shoulders
+        [2, 3],                   // right shoulder to arm
+        [1, 4], [4, 5], [5, 6],  // left shoulder down through belt
+        [2, 6],                   // right shoulder to belt right
+        [5, 7],                   // belt center to sword
+        [4, 9], [6, 8],          // belt to feet
+        [1, 10], [10, 11],       // left shoulder to shield
+      ];
+
+      // ── Faint background stars (decorative only) ──
+      const BG_STARS = Array.from({length: 80}, (_, i) => ({
+        x: ((i * 137.508) % 100),
+        y: ((i * 97.314) % 100),
+        r: Math.random() * 0.8 + 0.2,
+        o: Math.random() * 0.12 + 0.03,
+        phase: Math.random() * Math.PI * 2
+      }));
 
       function buildStars() {
         W = canvas.width = wrap.offsetWidth;
         H = canvas.height = wrap.offsetHeight;
-        if (W === 0 || H === 0) {
-          requestAnimationFrame(buildStars);
-          return;
-        }
-        stars = archive.map((entry, i) => ({
-          entry,
-          x: (entry.star_x / 100) * W,
-          y: (entry.star_y / 100) * H,
-          r: 4,
+        if (W === 0 || H === 0) { requestAnimationFrame(buildStars); return; }
+
+        // Map archive entries onto nav star positions in order
+        navStars = ORION_NAV.map((pos, i) => ({
+          pos,
+          entry: archive[i] || null,
+          x: (pos.x / 100) * W,
+          y: (pos.y / 100) * H,
+          r: 4.5,
           pulsePhase: Math.random() * Math.PI * 2
         }));
       }
 
       function drawConstellation(t) {
+        if (!navStars) return;
         ctx.clearRect(0, 0, W, H);
 
-        // Draw faint background stars
-        for (let i = 0; i < 60; i++) {
-          const bx = ((i * 137.5) % 100) / 100 * W;
-          const by = ((i * 97.3) % 100) / 100 * H;
-          const bo = 0.08 + 0.06 * Math.sin(t * 0.003 + i);
+        // Background scatter stars
+        BG_STARS.forEach(s => {
+          const o = s.o * (0.6 + 0.4 * Math.sin(t * 0.003 + s.phase));
           ctx.beginPath();
-          ctx.arc(bx, by, 0.8, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(200,180,140,${bo})`;
+          ctx.arc(s.x / 100 * W, s.y / 100 * H, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200,180,140,${o})`;
           ctx.fill();
-        }
+        });
 
-        // Draw connecting lines between stars
-        if (stars.length > 1) {
+        // Constellation connecting lines
+        ctx.strokeStyle = 'rgba(200,169,110,0.18)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([]);
+        ORION_LINES.forEach(([a, b]) => {
           ctx.beginPath();
-          ctx.moveTo(stars[0].x, stars[0].y);
-          for (let i = 1; i < stars.length; i++) {
-            ctx.lineTo(stars[i].x, stars[i].y);
-          }
-          ctx.strokeStyle = 'rgba(200,169,110,0.15)';
-          ctx.lineWidth = 1;
-          ctx.setLineDash([3, 6]);
+          ctx.moveTo(navStars[a].x, navStars[a].y);
+          ctx.lineTo(navStars[b].x, navStars[b].y);
           ctx.stroke();
-          ctx.setLineDash([]);
-        }
+        });
 
-        // Draw archive stars
-        stars.forEach((s, i) => {
+        // Constellation label
+        ctx.fillStyle = 'rgba(200,169,110,0.25)';
+        ctx.font = '600 11px Josefin Sans, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.letterSpacing = '0.3em';
+        ctx.fillText('ORION', W * 0.04, H * 0.94);
+
+        // Nav stars
+        navStars.forEach((s, i) => {
+          const hasEntry = !!s.entry;
           const pulse = 0.6 + 0.4 * Math.sin(t * 0.002 + s.pulsePhase);
+          const baseColor = hasEntry ? '200,169,110' : '150,150,170';
+          const alpha = hasEntry ? (0.7 + 0.3 * pulse) : 0.2;
 
-          // Outer glow
-          const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
-          grd.addColorStop(0, `rgba(200,169,110,${0.25 * pulse})`);
-          grd.addColorStop(1, 'rgba(200,169,110,0)');
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2);
-          ctx.fillStyle = grd;
-          ctx.fill();
+          // Glow
+          if (hasEntry) {
+            const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5);
+            grd.addColorStop(0, `rgba(${baseColor},${0.3 * pulse})`);
+            grd.addColorStop(1, `rgba(${baseColor},0)`);
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r * 5, 0, Math.PI * 2);
+            ctx.fillStyle = grd;
+            ctx.fill();
+          }
 
           // Star core
           ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(200,169,110,${0.7 + 0.3 * pulse})`;
+          ctx.arc(s.x, s.y, hasEntry ? s.r : s.r * 0.6, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${baseColor},${alpha})`;
           ctx.fill();
 
-          // Month label
-          ctx.fillStyle = `rgba(200,169,110,0.5)`;
-          ctx.font = '9px Josefin Sans, sans-serif';
-          ctx.letterSpacing = '0.15em';
-          ctx.textAlign = 'center';
-          ctx.fillText(`${s.entry.month.toUpperCase().slice(0,3)} ${s.entry.year}`, s.x, s.y + s.r * 3.5);
+          // Month label (only for filled entries)
+          if (hasEntry) {
+            ctx.fillStyle = `rgba(200,169,110,0.55)`;
+            ctx.font = '9px Josefin Sans, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(
+              `${s.entry.month.toUpperCase().slice(0,3)} ${s.entry.year}`,
+              s.x,
+              s.y + s.r * 3.8
+            );
+          }
         });
 
         requestAnimationFrame(drawConstellation);
@@ -740,7 +789,7 @@
 
       buildStars();
       requestAnimationFrame(drawConstellation);
-      window.addEventListener('resize', buildStars);
+      window.addEventListener('resize', () => { buildStars(); });
 
       // Mouse interaction
       canvas.addEventListener('mousemove', e => {
@@ -749,9 +798,9 @@
         const my = e.clientY - rect.top;
 
         let hovered = null;
-        stars.forEach(s => {
-          const dist = Math.hypot(mx - s.x, my - s.y);
-          if (dist < 16) hovered = s;
+        navStars.forEach(s => {
+          if (!s.entry) return;
+          if (Math.hypot(mx - s.x, my - s.y) < 20) hovered = s;
         });
 
         if (hovered) {
@@ -764,11 +813,25 @@
             ? `<img class="tooltip-thumb" src="images/meridian/${hovered.entry.filename}" alt="${hovered.entry.title}" />`
             : `<div class="tooltip-placeholder-thumb">No image yet</div>`;
 
-          // Position tooltip
-          const tx = hovered.x;
-          const ty = hovered.y;
-          tooltip.style.left = `${tx}px`;
-          tooltip.style.top = `${ty}px`;
+          // Smart tooltip positioning — flip below if near top, flip left if near right edge
+          const tipW = 180;
+          const tipH = 160;
+          const pad = 16;
+          let tx = hovered.x;
+          let ty = hovered.y;
+
+          // Horizontal: center on star, clamp to canvas bounds
+          let left = tx - tipW / 2;
+          if (left < pad) left = pad;
+          if (left + tipW > W - pad) left = W - tipW - pad;
+
+          // Vertical: show above by default, flip below if too close to top
+          let top = ty - tipH - 20;
+          if (top < pad) top = ty + 20;
+
+          tooltip.style.left = `${left}px`;
+          tooltip.style.top = `${top}px`;
+          tooltip.style.transform = 'none';
           tooltip.classList.add('visible');
         } else {
           canvas.style.cursor = 'default';
@@ -785,10 +848,9 @@
         const rect = canvas.getBoundingClientRect();
         const mx = e.clientX - rect.left;
         const my = e.clientY - rect.top;
-
-        stars.forEach(s => {
-          const dist = Math.hypot(mx - s.x, my - s.y);
-          if (dist < 16) {
+        navStars.forEach(s => {
+          if (!s.entry) return;
+          if (Math.hypot(mx - s.x, my - s.y) < 20) {
             window.location.href = `meridian/${s.entry.id}.html`;
           }
         });
