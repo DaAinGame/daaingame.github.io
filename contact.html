@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — Maclaskey Photo</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0f'/><text y='.9em' font-size='80' x='50%' dominant-baseline='middle' text-anchor='middle' fill='%23c8a96e'>✦</text></svg>"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: rgba(255,255,255,0.07);
+      --text: #ffffff;
+      --muted: #c8c8d8;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Starfield */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      background: linear-gradient(to bottom, rgba(10,10,15,0.95), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    /* Main content */
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem 4rem;
+    }
+
+    /* Page header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .page-header .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .page-header .eyebrow::before,
+    .page-header .eyebrow::after {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      max-width: 36ch;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* Form card */
+    .form-wrap {
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+    }
+
+    .field {
+      margin-bottom: 1.75rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: rgba(200,169,110,0.5);
+      background: rgba(200,169,110,0.04);
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: rgba(200,200,216,0.3);
+      letter-spacing: 0.06em;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    /* Honeypot — hidden from humans */
+    .hp { display: none; }
+
+    /* Submit button */
+    .submit-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .submit-note {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: rgba(200,200,216,0.35);
+      max-width: 24ch;
+      line-height: 1.6;
+    }
+
+    .btn-submit {
+      background: none;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-submit:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Success / error states */
+    .form-result {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+
+    .form-result.visible { display: block; }
+
+    .form-result .result-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .form-result h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    .form-result p {
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      line-height: 1.8;
+    }
+
+    .form-result .back-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(200,169,110,0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+
+    .form-result .back-link:hover { border-color: var(--accent); }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+    }
+
+    .footer-logo span { color: var(--accent); }
+
+    .footer-copy {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(200,200,216,0.35);
+      text-transform: uppercase;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .form-card { padding: 2rem 1.5rem; }
+      .submit-wrap { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <nav>
+    <a href="/index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
+    <ul class="nav-links">
+      <li><a href="/gallery.html">Gallery</a></li>
+      <li><a href="/index.html#about">About</a></li>
+      <li><a href="/meridian.html">Meridian</a></li>
+      <li><a href="/contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <div class="eyebrow">Get in touch</div>
+      <h1>Say Hello</h1>
+      <p>Whether it's a question, a collaboration, or just appreciation for a photo — I'd love to hear from you.</p>
+    </div>
+
+    <div class="form-wrap">
+      <div class="form-card">
+
+        <!-- Success / error message (hidden until submit) -->
+        <div class="form-result" id="form-result">
+          <div class="result-icon" id="result-icon">✦</div>
+          <h2 id="result-title">Message received.</h2>
+          <p id="result-body">Thanks for reaching out — I'll get back to you soon.</p>
+          <a href="/contact.html" class="back-link" id="result-link">Send another message</a>
+        </div>
+
+        <!-- The form -->
+        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+
+          <!-- Web3Forms access key -->
+          <input type="hidden" name="access_key" value="958df9a3-567d-4d7e-8732-8eb1acf24786"/>
+
+          <!-- Redirect back to contact page after submit (we handle it via JS instead) -->
+          <input type="hidden" name="redirect" value="false"/>
+
+          <!-- Subject line in your inbox -->
+          <input type="hidden" name="subject" value="New message — maclaskeyphoto.com"/>
+
+          <!-- Honeypot spam trap -->
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off"/>
+
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required/>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required/>
+          </div>
+
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="What's on your mind?" required></textarea>
+          </div>
+
+          <div class="submit-wrap">
+            <span class="submit-note">Your email stays between us — never shared or stored.</span>
+            <button type="submit" class="btn-submit" id="submit-btn">Send Message</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-logo">Maclaskey<span>Photo</span></div>
+    <div class="footer-copy">© 2026 Timothy Maclaskey &nbsp;·&nbsp; maclaskeyphoto.com</div>
+  </footer>
+
+  <script>
+    // ── Starfield ────────────────────────────────────────────────
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 180; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.7 + 0.1,
+          speed: Math.random() * 0.015 + 0.005,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function drawStars(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        const opacity = s.o * (0.6 + 0.4 * Math.sin(t * s.speed + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,180,140,${opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+
+    resize();
+    initStars();
+    requestAnimationFrame(drawStars);
+    window.addEventListener('resize', () => { resize(); initStars(); });
+
+    // ── Form submission ──────────────────────────────────────────
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const formResult = document.getElementById('form-result');
+    const resultIcon = document.getElementById('result-icon');
+    const resultTitle = document.getElementById('result-title');
+    const resultBody = document.getElementById('result-body');
+    const resultLink = document.getElementById('result-link');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(form)
+        });
+        const data = await res.json();
+
+        form.style.display = 'none';
+        formResult.classList.add('visible');
+
+        if (data.success) {
+          resultIcon.textContent = '✦';
+          resultTitle.textContent = 'Message received.';
+          resultBody.textContent = 'Thanks for reaching out — I\'ll get back to you soon.';
+          resultLink.style.display = 'inline-block';
+        } else {
+          resultIcon.textContent = '✗';
+          resultTitle.textContent = 'Something went wrong.';
+          resultBody.textContent = 'The message didn\'t go through. Please try again or reach out directly.';
+          resultLink.textContent = 'Try again';
+          resultLink.style.display = 'inline-block';
+        }
+      } catch (err) {
+        form.style.display = 'none';
+        formResult.classList.add('visible');
+        resultIcon.textContent = '✗';
+        resultTitle.textContent = 'Something went wrong.';
+        resultBody.textContent = 'Couldn\'t connect to the server. Please check your connection and try again.';
+        resultLink.textContent = 'Try again';
+        resultLink.style.display = 'inline-block';
+      }
+    });
+  </script>
+
+</body>
+</html>
