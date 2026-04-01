@@ -58,7 +58,9 @@
       opacity: 0.5;
     }
 
-    /* NAV */
+    /* HAMBURGER */
+
+        /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -70,7 +72,6 @@
       border-bottom: 1px solid var(--border);
       background: rgba(10,10,15,0.85);
       backdrop-filter: blur(12px);
-      animation: fadeDown 1s ease both;
     }
 
     .nav-logo {
@@ -101,536 +102,9 @@
       transition: color 0.3s;
     }
 
-    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
 
-    /* HAMBURGER */
-    .nav-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      z-index: 101;
-      position: relative;
-    }
-
-    .nav-toggle span {
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--text);
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      transform-origin: center;
-    }
-
-    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    .nav-toggle.open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-    /* HERO */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 3rem 0 10vw;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      animation: fadeUp 1s 0.3s ease both;
-    }
-
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      margin-bottom: 1rem;
-      animation: fadeUp 1s 0.5s ease both;
-    }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-sub {
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 3rem;
-      animation: fadeUp 1s 0.7s ease both;
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 1rem;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      border: 1px solid var(--border);
-      padding: 0.9rem 2rem;
-      transition: border-color 0.3s, background 0.3s, color 0.3s;
-      animation: fadeUp 1s 0.9s ease both;
-    }
-
-    .hero-cta:hover {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-      color: var(--accent);
-    }
-
-    .hero-cta::after {
-      content: '→';
-      transition: transform 0.3s;
-    }
-
-    .hero-cta:hover::after { transform: translateX(4px); }
-
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      animation: fadeUp 1s 1.2s ease both;
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
-    }
-
-    /* SECTION SHARED */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 3rem;
-    }
-
-    .section-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 3rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.4;
-    }
-
-    /* ABOUT */
-    .about {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
-      border-top: 1px solid var(--border);
-    }
-
-    .about-text h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 300;
-      line-height: 1.2;
-      margin-bottom: 1.5rem;
-    }
-
-    .about-text h2 em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .about-text p {
-      color: var(--muted);
-      line-height: 1.9;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
-
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .stat {
-      border: 1px solid var(--border);
-      padding: 1.5rem;
-      transition: border-color 0.3s, background 0.3s;
-    }
-
-    .stat:hover {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    .stat-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      font-weight: 300;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.4rem;
-    }
-
-    .stat-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* GENRES */
-    .genres {
-      max-width: 1200px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
-    }
-
-    .genre-item {
-      background: var(--bg);
-      padding: 2.5rem 2rem;
-      cursor: pointer;
-      transition: background 0.3s;
-      position: relative;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .genre-item::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 0; height: 2px;
-      background: var(--accent);
-      transition: width 0.4s ease;
-    }
-
-    .genre-item:hover { background: var(--surface); }
-    .genre-item:hover::before { width: 100%; }
-
-    .genre-icon {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .genre-name {
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-    }
-
-    .genre-desc {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .genre-item.featured .genre-name { color: var(--accent); }
-
-    /* PLACEHOLDER  */
-    .gallery {
-      max-width: 1200px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 250px 250px;
-      gap: 2px;
-    }
-
-    .gallery-item {
-      background: var(--surface);
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .gallery-item:first-child {
-      grid-row: span 2;
-    }
-
-    .gallery-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      border: 1px dashed var(--border);
-      transition: border-color 0.3s, color 0.3s;
-    }
-
-    .gallery-item:hover .gallery-placeholder {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .gallery-placeholder-icon { font-size: 2rem; opacity: 0.3; }
-
-    .gallery-note {
-      margin-top: 1.5rem;
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      font-style: italic;
-      text-align: center;
-    }
-
-    /* FOOTER */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-weight: 300;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-    }
-
-    .footer-logo span { color: var(--accent); }
-
-    .footer-copy {
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-    }
-
-    /* ABOUT ASIDE */
-    .about-aside {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 2.5rem;
-    }
-
-    .about-quote {
-      border-left: 2px solid var(--accent);
-      padding: 1.5rem 2rem;
-      background: var(--surface);
-    }
-
-    .about-quote-mark {
-      color: var(--accent);
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      opacity: 0.6;
-    }
-
-    .about-quote blockquote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.5;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
-
-    .about-quote-attr {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.6;
-    }
-
-    .about-contact-link {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: gap 0.2s;
-    }
-
-    .about-contact-link:hover { gap: 0.9rem; }
-
-    /* MERIDIAN TEASER */
-    .meridian-teaser {
-      max-width: 1200px;
-      margin: 0 auto;
-      border-top: 1px solid var(--border);
-    }
-
-    .meridian-teaser-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border: 1px solid var(--border);
-      min-height: 360px;
-    }
-
-    .meridian-teaser-img {
-      overflow: hidden;
-      background: var(--surface);
-    }
-
-    .meridian-teaser-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s ease;
-    }
-
-    .meridian-teaser-inner:hover .meridian-teaser-img img {
-      transform: scale(1.03);
-    }
-
-    .meridian-teaser-img-placeholder {
-      width: 100%;
-      height: 100%;
-      min-height: 360px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(200,200,216,0.2);
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-    }
-
-    .meridian-teaser-content {
-      padding: 3rem 3.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 1.25rem;
-      border-left: 1px solid var(--border);
-    }
-
-    .meridian-teaser-eyebrow {
-      font-size: 0.6rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .meridian-teaser-eyebrow::before {
-      content: '';
-      display: block;
-      width: 1.5rem;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.5;
-    }
-
-    .meridian-teaser-month {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.6;
-    }
-
-    .meridian-teaser-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 300;
-      line-height: 1.2;
-      letter-spacing: 0.02em;
-    }
-
-    .meridian-teaser-blurb {
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.8;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .meridian-teaser-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-top: 0.5rem;
-      transition: gap 0.2s;
-    }
-
-    .meridian-teaser-link:hover { gap: 1.1rem; }
-
-    /* GENRES — 4×2 */
-    .genres-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    /* ANIMATIONS */
-    /* HAMBURGER */
     .nav-toggle {
       display: none;
       flex-direction: column;
@@ -673,8 +147,6 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      nav { padding: 1.2rem 1.5rem; }
-
       .nav-toggle { display: flex; }
 
       .nav-links {
@@ -698,6 +170,8 @@
         font-size: 1rem;
         letter-spacing: 0.3em;
       }
+
+      nav { padding: 1.2rem 1.5rem; }
 
       .hero { padding: 0 1.5rem; }
       section { padding: 4rem 1.5rem; }
@@ -743,7 +217,7 @@
 
   <canvas id="starfield"></canvas>
 
-  <nav>
+    <nav>
     <a href="/index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -900,19 +374,6 @@
     initStars();
     requestAnimationFrame(drawStars);
     window.addEventListener('resize', () => { resize(); initStars(); });
-
-    // Hamburger nav
-    const navToggle = document.getElementById('nav-toggle');
-    const navLinks = document.getElementById('nav-links');
-    navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('open');
-      navLinks.classList.toggle('open');
-    });
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        navToggle.classList.remove('open');
-        navLinks.classList.remove('open');
-      });
     });
 
     // ── Portfolio: weighted random photos ────────────────────────
@@ -1011,7 +472,10 @@ fetch('/quotes.json')
     }
 
     loadMeridianTeaser();
-
+    });
+    });
+    });
+  
     // Hamburger nav
     const navToggle = document.getElementById('nav-toggle');
     const navLinks = document.getElementById('nav-links');
