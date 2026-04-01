@@ -211,6 +211,32 @@
     .content > *:nth-child(5) { animation-delay: 0.7s; }
     .content > *:nth-child(6) { animation-delay: 0.85s; }
     .content > *:nth-child(7) { animation-delay: 1s; }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #0a0a0f;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        z-index: 99;
+        overflow: hidden;
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-links a {
+        font-size: 1rem;
+        letter-spacing: 0.3em;
+      }
+    }
   </style>
 </head>
 <body>

@@ -56,6 +56,8 @@
     }
 
     .nav-logo {
+      position: relative;
+      z-index: 101;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;
       font-weight: 300;
@@ -321,6 +323,30 @@
 
     /* Responsive */
     @media (max-width: 900px) {
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #0a0a0f;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        z-index: 99;
+        overflow: hidden;
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-links a {
+        font-size: 1rem;
+        letter-spacing: 0.3em;
+      }
+
       .intro { grid-template-columns: 1fr; gap: 3rem; }
       .intro-photo { max-width: 360px; }
       .gear-grid { grid-template-columns: 1fr; }
