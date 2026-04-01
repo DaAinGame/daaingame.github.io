@@ -39,51 +39,6 @@
       opacity: 0.4;
     }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 3rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(12px);
-    }
-
-    .nav-logo {
-      position: relative;
-      z-index: 101;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-weight: 300;
-      letter-spacing: 0.15em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-logo span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--accent); }
-
     /* PAGE HEADER */
     .page-header {
       position: relative;
@@ -453,6 +408,55 @@
     .footer-copy { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); }
 
     /* HAMBURGER */
+
+        /* NAV */
+    .nav-links a.active { color: var(--accent); }
+
+        /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-decoration: none;
+      position: relative;
+      z-index: 101;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
     .nav-toggle {
       display: none;
       flex-direction: column;
@@ -478,7 +482,7 @@
     .nav-toggle.open span:nth-child(2) { opacity: 0; }
     .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-    @keyframes fadeUp {
+@keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
@@ -508,6 +512,11 @@
         letter-spacing: 0.3em;
       }
 
+
+
+      .nav-links.open { display: flex; }
+
+
       .feature { grid-template-columns: 1fr; gap: 2rem; }
       .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .page-desc { text-align: left; }
@@ -516,8 +525,6 @@
     }
 
     @media (max-width: 600px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
       .page-header { padding: 7rem 1.5rem 2rem; }
       .feature { padding: 3rem 1.5rem; }
       .archive { padding: 2rem 1.5rem 4rem; }
@@ -530,15 +537,15 @@
 
   <canvas id="starfield"></canvas>
 
-  <nav>
-    <a href="index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
+      <nav>
+    <a href="/index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-  <span></span><span></span><span></span>
-</button>
-<ul class="nav-links" id="nav-links">
-      <li><a href="gallery.html">Gallery</a></li>
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/gallery.html">Gallery</a></li>
       <li><a href="/about.html">About</a></li>
-      <li><a href="meridian.html" class="active">Meridian</a></li>
+      <li><a href="/meridian.html" class="active">Meridian</a></li>
       <li><a href="/contact.html">Contact</a></li>
     </ul>
   </nav>
@@ -973,6 +980,20 @@
     }
 
     init();
+
+    // Hamburger nav
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
   </script>
 
 </body>

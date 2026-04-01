@@ -44,49 +44,6 @@
       pointer-events: none;
     }
 
-    /* Nav */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.5rem 3rem;
-      background: linear-gradient(to bottom, rgba(10,10,15,0.95), transparent);
-    }
-
-    .nav-logo {
-      position: relative;
-      z-index: 101;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .nav-logo span { color: var(--accent); }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 2.5rem;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--accent); }
-
     /* Main content */
     main {
       position: relative;
@@ -321,7 +278,77 @@
     }
 
     /* Responsive */
-    @media (max-width: 600px) {
+        /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      text-decoration: none;
+      position: relative;
+      z-index: 101;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 101;
+      position: relative;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 600px) {
       .nav-toggle { display: flex; }
 
       .nav-links {
@@ -346,8 +373,9 @@
         letter-spacing: 0.3em;
       }
 
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
+
+
+      .nav-links.open { display: flex; }
       .form-card { padding: 2rem 1.5rem; }
       .submit-wrap { flex-direction: column; align-items: flex-start; }
       footer { flex-direction: column; gap: 1rem; text-align: center; }
@@ -358,14 +386,14 @@
 
   <canvas id="starfield"></canvas>
 
-  <nav>
+      <nav>
     <a href="/index.html" class="nav-logo">Maclaskey<span>Photo</span></a>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-  <span></span><span></span><span></span>
-</button>
-<ul class="nav-links" id="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
       <li><a href="/gallery.html">Gallery</a></li>
-      <li><a href="/index.html#about">About</a></li>
+      <li><a href="/about.html">About</a></li>
       <li><a href="/meridian.html">Meridian</a></li>
       <li><a href="/contact.html" class="active">Contact</a></li>
     </ul>
@@ -434,8 +462,7 @@
     <div class="footer-copy">© 2026 Timothy Maclaskey &nbsp;·&nbsp; maclaskeyphoto.com</div>
   </footer>
 
-  <script>
-    // ── Starfield ────────────────────────────────────────────────
+    <script>
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -476,21 +503,7 @@
     requestAnimationFrame(drawStars);
     window.addEventListener('resize', () => { resize(); initStars(); });
 
-    // Hamburger nav
-    const navToggle = document.getElementById('nav-toggle');
-    const navLinks = document.getElementById('nav-links');
-    navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('open');
-      navLinks.classList.toggle('open');
-    });
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        navToggle.classList.remove('open');
-        navLinks.classList.remove('open');
-      });
-    });
-
-    // ── Form submission ──────────────────────────────────────────
+    // Form submission
     const form = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
     const formResult = document.getElementById('form-result');
@@ -503,26 +516,23 @@
       e.preventDefault();
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
-
       try {
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           body: new FormData(form)
         });
         const data = await res.json();
-
         form.style.display = 'none';
         formResult.classList.add('visible');
-
         if (data.success) {
           resultIcon.textContent = '✦';
           resultTitle.textContent = 'Message received.';
-          resultBody.textContent = 'Thanks for reaching out — I\'ll get back to you soon.';
+          resultBody.textContent = "Thanks for reaching out — I'll get back to you soon.";
           resultLink.style.display = 'inline-block';
         } else {
           resultIcon.textContent = '✗';
           resultTitle.textContent = 'Something went wrong.';
-          resultBody.textContent = 'The message didn\'t go through. Please try again or reach out directly.';
+          resultBody.textContent = "The message didn't go through. Please try again or reach out directly.";
           resultLink.textContent = 'Try again';
           resultLink.style.display = 'inline-block';
         }
@@ -531,10 +541,24 @@
         formResult.classList.add('visible');
         resultIcon.textContent = '✗';
         resultTitle.textContent = 'Something went wrong.';
-        resultBody.textContent = 'Couldn\'t connect to the server. Please check your connection and try again.';
+        resultBody.textContent = "Couldn't connect to the server. Please check your connection and try again.";
         resultLink.textContent = 'Try again';
         resultLink.style.display = 'inline-block';
       }
+    });
+
+    // Hamburger nav
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
     });
   </script>
 
