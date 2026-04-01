@@ -484,6 +484,20 @@
     initStars();
     requestAnimationFrame(drawStars);
     window.addEventListener('resize', () => { resize(); initStars(); });
+
+    // Hamburger nav
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
   </script>
 
 </body>
